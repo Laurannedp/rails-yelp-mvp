@@ -1,6 +1,5 @@
 class RestaurantsController < ApplicationController
-
-  before_action :set_restaurant, only: [:show, :edit, :update, :delete]
+  before_action :set_restaurant, only: [:show]
 
   def index
     @restaurants = Restaurant.all
@@ -13,24 +12,13 @@ class RestaurantsController < ApplicationController
     @restaurant = Restaurant.new
   end
 
-  def edit
-  end
-
   def create
     @restaurant = Restaurant.new(restaurant_params)
-    @restaurant.save
-    redirect_to restaurant_path(@restaurant)
-  end
-
-  def update
-    @restaurant = Restaurant.new(restaurant_params)
-    @restaurant.update(restaurant_params)
-    redirect_to restaurant_path(@restaurant)
-  end
-
-  def delete
-    @restauran.destroy
-    redirect_to restaurants_path
+    if @restaurant.save
+      redirect_to restaurant_path(@restaurant)
+    else
+      render 'new'
+    end
   end
 
   private
@@ -40,6 +28,6 @@ class RestaurantsController < ApplicationController
   end
 
   def restaurant_params
-    params.require(:restaurant).permit(:name, :address, :phone_number, :category, :rating)
+    params.require(:restaurant).permit(:name, :address, :phone_number, :category)
   end
 end
